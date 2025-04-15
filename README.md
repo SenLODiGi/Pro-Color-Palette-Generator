@@ -27,7 +27,7 @@ Generate, tweak, and export palettes with ease! 🎉
 
 ## 🚀 How to Use
 
-1. Visit the live app 👉 [SenLODiGi.github.io/pro-color-palette-generator](https://SenLODiGi.github.io/pro-color-palette-generator)  
+1. Visit the live app 👉 [SenLODiGi.github.io/pro-color-palette-generator](https://senlodigi.github.io/Pro-Color-Palette-Generator/)  
 2. Enter up to five hex colors in the fields, or upload an image to extract colors. 🖌️  
 3. (Optional) Select a harmony mode to adjust your palette. 🎨  
 4. Click **Generate Palette** to see your palette with shades. 🌟  
