@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pro Color Palette Generator</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="light">
+  <div id="particles-js"></div>
+
+  <!-- Toast Container for Notifications -->
+  <div class="toast-container">
+    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true" data-bs-delay="2000">
+      <div class="toast-body"></div>
+    </div>
+  </div>
+
+  <main class="p-4">
+    <!-- Header with Theme Toggle and About Button -->
+    <div class="w-100 d-flex justify-content-between align-items-center mb-5">
+      <h1 class="text-5xl font-extrabold">🎨 Pro Color Palette Generator</h1>
+      <div class="d-flex align-items-center gap-3">
+        <button class="btn btn-ash" data-bs-toggle="modal" data-bs-target="#aboutModal" data-bs-tooltip="tooltip" title="Learn more about this app">About</button>
+        <label class="theme-toggle" data-bs-toggle="tooltip" data-bs-placement="left" title="Toggle Light/Dark Theme">
+          <input type="checkbox" id="theme-toggle-checkbox" onchange="toggleTheme()">
+          <span class="slider"></span>
+          <span class="theme-icon sun-icon">☀️</span>
+          <span class="theme-icon moon-icon">🌙</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-10">
+          <div class="glass-container rounded-3 p-5">
+            <div class="row g-4">
+              <div class="col-12">
+                <h5 class="text-center mb-4">Select Colors</h5>
+                <div class="row g-2 justify-content-center">
+                  <div class="col-auto">
+                    <input type="text" id="color1" class="form-control form-control-sm" placeholder="#ff0000" />
+                  </div>
+                  <div class="col-auto">
+                    <input type="text" id="color2" class="form-control form-control-sm" placeholder="#00ff00" />
+                  </div>
+                  <div class="col-auto">
+                    <input type="text" id="color3" class="form-control form-control-sm" placeholder="#0000ff" />
+                  </div>
+                  <div class="col-auto">
+                    <input type="text" id="color4" class="form-control form-control-sm" placeholder="#ffff00" />
+                  </div>
+                  <div class="col-auto">
+                    <input type="text" id="color5" class="form-control form-control-sm" placeholder="#00ffff" />
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 text-center">
+                <label for="image-upload" class="d-block mb-2">Upload Image for Palette Inspiration</label>
+                <input type="file" id="image-upload" accept="image/*" class="form-control w-auto mx-auto mb-3" />
+                <img id="image-preview" class="mt-3 rounded w-100" alt="Uploaded Image Preview" style="display: none; max-width: 200px;" />
+              </div>
+              <div class="col-12 text-center">
+                <label for="harmony-mode" class="d-block mb-2">Color Harmony Mode</label>
+                <select id="harmony-mode" class="form-select w-auto mx-auto mb-3" onchange="generatePalette()">
+                  <option value="none">No Harmony</option>
+                  <option value="complementary">Complementary</option>
+                  <option value="analogous">Analogous</option>
+                  <option value="triadic">Triadic</option>
+                </select>
+              </div>
+              <div class="col-12 text-center">
+                <button class="btn btn-ash mx-1" onclick="generatePalette()" data-bs-toggle="tooltip" title="Generate a palette from the selected colors">Generate Palette</button>
+                <button class="btn btn-ash mx-1" onclick="generateRandomPalette()" data-bs-toggle="tooltip" title="Generate a random palette">Random Palette</button>
+                <button class="btn btn-ash mx-1" onclick="simulateColorBlindness()" data-bs-toggle="tooltip" title="Simulate how the palette looks with color blindness">Simulate Color Blindness</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Palette Display -->
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-4 mt-5" id="palette"></div>
+
+      <!-- Export Buttons -->
+      <div class="text-center mt-5">
+        <button class="btn btn-ash mx-1" onclick="exportToPNG()" data-bs-toggle="tooltip" title="Export the palette as a PNG image">Export PNG</button>
+        <button class="btn btn-ash mx-1" onclick="exportToJSON()" data-bs-toggle="tooltip" title="Export the palette as a JSON file">Export JSON</button>
+      </div>
+    </div>
+  </main>
+
+  <!-- Advanced Footer -->
+  <footer class="w-100">
+    <div class="container">
+      <div class="row text-center text-md-start">
+        <!-- Subscription Section -->
+        <div class="col-md-4 mb-4 footer-section">
+          <h5 class="fs-4">Stay Updated</h5>
+          <p class="mb-3">Subscribe to get the latest updates and color inspiration!</p>
+          <div class="subscription-box">
+            <div class="input-group">
+              <input type="email" id="subscribe-email" class="form-control" placeholder="Enter your email" />
+              <button class="btn btn-ash" onclick="subscribe()">Subscribe</button>
+            </div>
+          </div>
+        </div>
+        <!-- Contact Section -->
+        <div class="col-md-4 mb-4 footer-section">
+          <h5>Contact Me</h5>
+          <div class="contact-info">
+            <p>
+              <a href="mailto:senlodigi@gmail.com">
+                <i class="bi bi-envelope"></i> senlodigi@gmail.com
+              </a>
+            </p>
+            <p>
+              <a href="tel:+94710120130">
+                <i class="bi bi-telephone"></i> +94 71 0 120 130
+              </a>
+            </p>
+          </div>
+        </div>
+        <!-- Social Media Section -->
+        <div class="col-md-4 mb-4 footer-section">
+          <h5>Follow Me</h5>
+          <div class="social-links">
+            <a href="https://linktr.ee/senith_samaranayake" target="_blank" title="Linktree"><i class="bi bi-link-45deg"></i></a>
+            <a href="https://www.linkedin.com/in/senith-samaranayake/" target="_blank" title="LinkedIn"><i class="bi bi-linkedin"></i></a>
+            <a href="https://instagram.com/senith.lokitha" target="_blank" title="Instagram"><i class="bi bi-instagram"></i></a>
+          </div>
+        </div>
+      </div>
+      <!-- Copyright and Attribution -->
+      <div class="footer-divider"></div>
+      <div class="text-center">
+        <p class="mb-1">Copyright <b>Pro Color Palette Generator</b> All Rights Reserved</p>
+        <p>Designed by <b>Senith Samaranayake</b></p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- About Modal -->
+  <div class="modal fade" id="aboutModal" tabindex="-1" aria-labelledby="aboutModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content glass-container">
+        <div class="modal-header">
+          <h5 class="modal-title" id="aboutModalLabel">About Pro Color Palette Generator</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Welcome to the <strong>Pro Color Palette Generator</strong>! This tool helps you create beautiful color palettes for your design projects.</p>
+          <p>Features include:</p>
+          <ul>
+            <li>Generate palettes manually or from images using AI</li>
+            <li>Apply color harmony modes (complementary, analogous, triadic)</li>
+            <li>Simulate color blindness to ensure accessibility</li>
+            <li>Export palettes as PNG or JSON</li>
+          </ul>
+          <p>Created by <strong>Senith Samaranayake</strong>. Follow me on <a href="https://www.linkedin.com/in/senith-samaranayake/" target="_blank">LinkedIn</a> for updates!</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-ash" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS and Dependencies -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <!-- TensorFlow.js -->
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.21.0/dist/tf.min.js"></script>
+  <!-- Custom JS -->
+  <script src="script.js"></script>
+</body>
+</html>
